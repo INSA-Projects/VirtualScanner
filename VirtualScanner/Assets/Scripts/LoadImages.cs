@@ -24,6 +24,7 @@ public class LoadImages : MonoBehaviour
         RayMarching ray = Camera.main.GetComponent<RayMarching>();
         ray.Slices = new Texture2D[count];
 
+
         try
         {
             int i = 0;
