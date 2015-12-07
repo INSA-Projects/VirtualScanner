@@ -145,7 +145,7 @@ public class RayMarching : MonoBehaviour
 	public void GenerateVolumeTexture()
 	{
 		// sort
-		System.Array.Sort(slices, (x, y) => x.name.CompareTo(y.name));
+		//System.Array.Sort(slices, (x, y) => x.name.CompareTo(y.name));
 		
 		// use a bunch of memory!
 		_volumeBuffer = new Texture3D(volumeWidth, volumeHeight, volumeDepth, TextureFormat.ARGB32, false);
