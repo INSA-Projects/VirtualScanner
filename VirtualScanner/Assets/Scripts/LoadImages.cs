@@ -5,37 +5,60 @@ using System;
 
 public class LoadImages : MonoBehaviour 
 {
-    
-	// Use this for initialization
-	void Start () 
+    private string slicesPath; // path of png slices
+    private string dicomPath; // path of dicom slices
+
+
+    void Start()
+    {
+        this.slicesPath = Application.dataPath + @"/Slices/";
+        this.dicomPath = PlayerPrefs.GetString("DICOMFolder");
+        if (dicomPath == "")
+        {
+            Debug.LogError("No DICOM folder was specified. Didn't you forget to specify the DICOM folder in the FolderSelection scene?");
+            return;
+        }
+
+        convertDicomToPng();
+        loadSlices();
+    }
+
+
+    // COCO
+    void convertDicomToPng()
+    {
+        // dicom files are in "this.dicomPath"
+        // resulting png slices must be stored in "this.slicesPath"
+    }
+
+
+    /// <summary>
+    /// Load the png slices into the scene
+    /// </summary>
+	void loadSlices () 
     {
         string format = "png";
-        // string slicesPath = Application.dataPath + @"/Slices/";
-        string slicesPath = "C:\\dcm\\out\\";
 
-        DirectoryInfo dirInfo = new DirectoryInfo(slicesPath);
+        DirectoryInfo dirInfo = new DirectoryInfo(this.slicesPath);
         int count = this.getNumberOfFiles(dirInfo, format);
         
         if (count < 2)
         {
-            Debug.LogError("Couldn't build the result. Are you sure you put your " + format + " images into the \'" + slicesPath + "\' folder ?");
+            Debug.LogError("Couldn't build the result. Are you sure you put your " + format + " images into the \'" + this.slicesPath + "\' folder ?");
             return;
         }
 
         RayMarching ray = Camera.main.GetComponent<RayMarching>();
         ray.Slices = new Texture2D[count];
 
-
         try
         {
             int i = 0;
             FileInfo[] fis = dirInfo.GetFiles();
-            Array.Sort(fis,new sortFileName());
             foreach (FileInfo fi in fis)
             {
                 if (fi.Extension.ToLower().Contains(format))
                 {
-                    Debug.Log("add image number" + i + " named " + fi.FullName);
                     var fileData = File.ReadAllBytes (fi.FullName);
                     Texture2D texture = new Texture2D (2, 2);
                     texture.LoadImage (fileData);
@@ -50,15 +73,9 @@ public class LoadImages : MonoBehaviour
         }
 	}
 
-	
-	// Update is called once per frame
-	void Update () 
-    {
-	
-	}
 
     /// <summary>
-    /// Returns the number of png files in the directory dir
+    /// Returns the number of files of type "format" in the directory "dir"
     /// </summary>
     /// <param name="dir"></param>
     /// <returns></returns>
@@ -82,37 +99,6 @@ public class LoadImages : MonoBehaviour
             Debug.LogError(e.Message);
         }        
         return numberOfFiles;
-    }
-
-
-    private class sortFileName : IComparer
-    {
-        int IComparer.Compare(object a, object b)
-        {
-            FileInfo f1 = (FileInfo)a;
-            FileInfo f2 = (FileInfo)b;
-            String s1 = f1.FullName;
-            string s2 = f2.FullName;
-            // s1 = s1.Remove(0, 11);
-            //s2 = s1.Remove(0, 11);
-            //s1 = s1.Replace(".png","");
-            //s2 = s2.Replace(".png","");
-            //  Debug.Log(s1.Remove(0,11).Replace(".png","") + "|" + s2);
-            int i1 = Int32.Parse(s1.Remove(0, 11).Replace(".png", ""));
-            int i2 = Int32.Parse(s2.Remove(0, 11).Replace(".png", ""));
-            if (i1 > i2)
-            {
-                return 1;
-            }
-            if (i1 < i2)
-            {
-                return -1;
-            }
-            else
-            {
-                return 0;
-            }
-        }
     }
 
 }
