@@ -2,6 +2,7 @@
 using System.Collections;
 using System.IO;
 using System;
+using System.Diagnostics;
 
 public class LoadImages : MonoBehaviour 
 {
@@ -15,7 +16,7 @@ public class LoadImages : MonoBehaviour
         this.dicomPath = PlayerPrefs.GetString("DICOMFolder");
         if (dicomPath == "")
         {
-            Debug.LogError("No DICOM folder was specified. Didn't you forget to specify the DICOM folder in the FolderSelection scene?");
+            UnityEngine.Debug.LogError("No DICOM folder was specified. Didn't you forget to specify the DICOM folder in the FolderSelection scene?");
             return;
         }
 
@@ -29,13 +30,48 @@ public class LoadImages : MonoBehaviour
     {
         // dicom files are in "this.dicomPath"
         // resulting png slices must be stored in "this.slicesPath"
+        LaunchCommandLineApp(this.dicomPath);
+        this.slicesPath = this.dicomPath + @"/out/";
+    }
+
+    /// <summary>
+    /// Launch the legacy application with some options set.
+    /// </summary>
+    static void LaunchCommandLineApp(string dicompath)
+    {
+
+        // Use ProcessStartInfo class
+        ProcessStartInfo startInfo = new ProcessStartInfo();
+      //  startInfo.CreateNoWindow = true;
+      //  startInfo.UseShellExecute = true;
+        startInfo.FileName = Application.dataPath + @"/DicomConverter.exe";
+       // UnityEngine.Debug.LogError(startInfo.FileName);
+        //   startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+        startInfo.Arguments = dicompath;
+
+        try
+        {
+            // Start the process with the info we specified.
+            // Call WaitForExit and then the using statement will close.
+            using (Process exeProcess = Process.Start(startInfo))
+            {
+                exeProcess.WaitForExit();
+            }
+        }
+        catch (Exception e)
+        {
+
+            UnityEngine.Debug.LogError("Error executing converter :" + e.Message);
+            // Log error.
+        }
     }
 
 
-    /// <summary>
-    /// Load the png slices into the scene
-    /// </summary>
-	void loadSlices () 
+
+/// <summary>
+/// Load the png slices into the scene
+/// </summary>
+void loadSlices () 
     {
         string format = "png";
 
@@ -44,7 +80,7 @@ public class LoadImages : MonoBehaviour
         
         if (count < 2)
         {
-            Debug.LogError("Couldn't build the result. Are you sure you put your " + format + " images into the \'" + this.slicesPath + "\' folder ?");
+            UnityEngine.Debug.LogError("Couldn't build the result. Are you sure you put your " + format + " images into the \'" + this.slicesPath + "\' folder ?");
             return;
         }
 
@@ -69,7 +105,7 @@ public class LoadImages : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.LogError(e.Message);
+            UnityEngine.Debug.LogError(e.Message);
         }
 	}
 
@@ -96,7 +132,7 @@ public class LoadImages : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.LogError(e.Message);
+            UnityEngine.Debug.LogError(e.Message);
         }        
         return numberOfFiles;
     }
