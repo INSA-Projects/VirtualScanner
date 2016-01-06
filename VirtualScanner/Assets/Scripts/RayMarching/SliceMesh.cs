@@ -14,8 +14,8 @@ public class SliceMesh : MonoBehaviour
 
 		_planeTrans = planeObj.transform;
 
-		planeObj.transform.parent = Camera.main.transform;
-		_planeTrans.localPosition = new Vector3(0, 0, Camera.main.nearClipPlane + 0.001f);
+		planeObj.transform.parent = GameObject.Find("Camera0").transform;
+		_planeTrans.localPosition = new Vector3(0, 0, GameObject.Find("Camera0").GetComponent<Camera>().nearClipPlane + 0.001f);
 		_planeTrans.localRotation = Quaternion.Euler(-90, 0, 0);
 
 		_outputMesh = new Mesh[meshes.Length];
@@ -30,8 +30,21 @@ public class SliceMesh : MonoBehaviour
 		var cuttingPlane = new Plane(_planeTrans.up, _planeTrans.position);
 		for(int i = 0; i < meshes.Length; i++)
 		{
+			if(_outputMesh[i] == null){
+				UnityEngine.Debug.Log("_outputMesh");
+			}
+			if(meshes[i] == null){
+				UnityEngine.Debug.Log("meshes");
+			}
 			MeshSlicer.CutTriangleMeshOneSide(_outputMesh[i], meshes[i].mesh, cuttingPlane, meshes[i].transform, _planeTrans, false, true);
 			Graphics.DrawMesh(_outputMesh[i], meshes[i].transform.localToWorldMatrix, meshes[i].GetComponent<Renderer>().material, 0);
 		}
+	}
+
+	public void setSize(MeshFilter m)
+	{
+		meshes = new MeshFilter[1];
+		UnityEngine.Debug.Log ("Start Init SliceMesh");
+		meshes [0] = m;
 	}
 }

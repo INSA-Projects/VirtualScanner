@@ -68,10 +68,10 @@ public class LoadImages : MonoBehaviour
 
 
 
-/// <summary>
-/// Load the png slices into the scene
-/// </summary>
-void loadSlices () 
+    /// <summary>
+    /// Load the png slices into the scene
+    /// </summary>
+    void loadSlices () 
     {
         string format = "png";
 
@@ -84,8 +84,20 @@ void loadSlices ()
             return;
         }
 
-        RayMarching ray = Camera.main.GetComponent<RayMarching>();
+        if (!GameObject.Find("Camera0"))
+        {
+            UnityEngine.Debug.LogError("Camera0 non trouvee");
+        }
+        RayMarching ray = GameObject.Find("Camera0").GetComponent<RayMarching>();
+		if (ray == null) {
+			UnityEngine.Debug.LogError ("Ray null");
+		}
         ray.Slices = new Texture2D[count];
+
+
+       
+
+
 
         try
         {
@@ -106,6 +118,15 @@ void loadSlices ()
         catch (Exception e)
         {
             UnityEngine.Debug.LogError(e.Message);
+			StackTrace st = new StackTrace(e, true);
+			StackFrame frame = st.GetFrame(0);
+			//Get the file name
+			string fileName = frame.GetFileName();
+			//Get the method name
+			string methodName = frame.GetMethod().Name;
+			int line = frame.GetFileLineNumber();
+			UnityEngine.Debug.LogError("File " + fileName  + " Methode " + methodName + " line " + line);
+
         }
 	}
 
@@ -135,6 +156,12 @@ void loadSlices ()
             UnityEngine.Debug.LogError(e.Message);
         }        
         return numberOfFiles;
+    }
+
+    void initializeRayMarching()
+    {
+        /*RayMarching ray = GameObject.Find("Camera0").GetComponent<RayMarching>();
+        ray.*/
     }
 
 }

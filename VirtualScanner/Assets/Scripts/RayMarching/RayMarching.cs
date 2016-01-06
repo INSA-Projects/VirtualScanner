@@ -40,10 +40,10 @@ public class RayMarching : MonoBehaviour
 	[SerializeField]
 	private Vector4 clipDimensions = new Vector4(100, 100, 100, 0);
 
-	private Material _rayMarchMaterial;
-	private Material _compositeMaterial;
+	public Material _rayMarchMaterial;
+	public Material _compositeMaterial;
 	private Camera _ppCamera;
-	private Texture3D _volumeBuffer;
+	public Texture3D _volumeBuffer;
 
 
     public Texture2D[] Slices
@@ -52,18 +52,23 @@ public class RayMarching : MonoBehaviour
         set { this.slices = value; }
     }
     
-	private void Awake()
+	/*private void Awake()
 	{
 		_rayMarchMaterial = new Material(rayMarchShader);
 		_compositeMaterial = new Material(compositeShader);
 	}
-
-    /*
+*/
+    
 	private void Start()
-	{
-		GenerateVolumeTexture();
+	{	
+		if (rayMarchShader == null) {
+			UnityEngine.Debug.Log ("Shader null");
+		}
+		_rayMarchMaterial = new Material(rayMarchShader);
+		_compositeMaterial = new Material(compositeShader);
+		//GenerateVolumeTexture();
 	}
-    */
+    
 	private void OnDestroy()
 	{
 		if(_volumeBuffer != null)
@@ -181,7 +186,21 @@ public class RayMarching : MonoBehaviour
 		
 		_volumeBuffer.SetPixels(volumeColors);
 		_volumeBuffer.Apply();
-		
+
 		_rayMarchMaterial.SetTexture("_VolumeTex", _volumeBuffer);
 	}
+
+    public void setShaders(Shader composite, Shader front, Shader back, Shader ray)
+    {
+        compositeShader = composite;
+	    renderFrontDepthShader = front;
+		renderBackDepthShader = back;
+		rayMarchShader = ray;
+    }
+
+    public void setTarget()
+    {
+        cubeTarget = GameObject.Find("Cube").GetComponent<Transform>();
+		clipPlane = GameObject.Find("Clipping Plane").GetComponent<Transform>();
+    }
 }
