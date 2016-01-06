@@ -32,6 +32,7 @@ public class DicomPngConvertor : MonoBehaviour
     private IEnumerator launchCommandLineApp()
     {
         yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
 
         // Use ProcessStartInfo class
         ProcessStartInfo startInfo = new ProcessStartInfo();
