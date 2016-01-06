@@ -1,19 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CameraHandler : MonoBehaviour {
-
-    Camera middleVR;
+public class CameraHandler : MonoBehaviour 
+{
+    public GameObject defaultUser;
         
 	// Use this for initialization
-	void Start () {
-        middleVR = GameObject.Find("Camera0").GetComponent<Camera>();
-        middleVR.gameObject.AddComponent<RayMarching>();
-        middleVR.GetComponent<RayMarching>().enabled = true;
-        middleVR.GetComponent<Camera>().gameObject.AddComponent<SliceMesh>();
-        middleVR.GetComponent<SliceMesh>().enabled = true;
-
-
+	void Start () 
+    {
+        GameObject middleVRObject = GameObject.Find("Camera0");
+        middleVRObject.AddComponent<RayMarching>();
+        
 
 	}
 	

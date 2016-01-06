@@ -1,18 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class InitRayMarching : MonoBehaviour {
+public class InitRayMarching : MonoBehaviour 
+{
 
-
+    [Header("Florent Mallard du lol")]
     public Shader compositeShader;
-
     public Shader renderFrontDepthShader;
-
     public Shader renderBackDepthShader;
-
     public Shader rayMarchShader;
-
-	public MeshFilter mesh;
+    public MeshFilter mesh;
 
 
 	// Use this for initialization  
