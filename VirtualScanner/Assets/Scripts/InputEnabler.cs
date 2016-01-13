@@ -2,20 +2,18 @@
 using System.Collections;
 
 public class InputEnabler : MonoBehaviour{
-	public int KEYBOARD = 0;
-	public int RAZER = 1;
 	
 	public KeyboardController keyboardControl;
-	//public RazerControl razerControl;
+	public RazerController razerControl;
 	
 	void Start(){
-		int device = PlayerPrefs.GetInt ("Device");
-		if (device == this.KEYBOARD) {
+		int device = PlayerPrefs.GetInt ("InputMethod");
+		if (device == InputMethod.RAZER) {
 			this.keyboardControl.enabled = false;
-			//this.razerControl.enabled = true;
+			this.razerControl.enabled = true;
 		} else {
 			this.keyboardControl.enabled = true;
-			//this.razerControl.enabled = false;
+			this.razerControl.enabled = false;
 		}
 		
 	}

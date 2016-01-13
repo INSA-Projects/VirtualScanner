@@ -15,7 +15,16 @@ public class KeyboardController : MonoBehaviour
     public float minimumY = -60F;
     public float maximumY = 60F;
 
+	vrCamera camView;
+	vrCamera camUser;
+
     float rotationY = 0F;
+
+	void Start(){
+
+		camView = MiddleVR.VRDisplayMgr.GetCamera ("ViewCamera");
+		camUser = MiddleVR.VRDisplayMgr.GetCamera ("Camera0");
+	}
 
 
     void Update()

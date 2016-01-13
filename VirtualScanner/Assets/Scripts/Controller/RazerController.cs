@@ -15,8 +15,8 @@ public class RazerController : MonoBehaviour
 
 
     // mouse
-    public float sensitivityX = 200;
-    public float sensitivityY = 200;
+    public float sensitivityX = -200;
+    public float sensitivityY = -200;
 
 	public float sensitivityTranslateX = 0.05F;
 	public float sensitivitiyTranslateY = 0.05F;
