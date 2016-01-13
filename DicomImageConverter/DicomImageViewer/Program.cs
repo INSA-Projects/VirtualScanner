@@ -32,18 +32,28 @@ namespace DicomImageViewer
 
             if (Directory.Exists(Path))
             {
-                Console.WriteLine("Valid path : " + Path);
+                //Console.WriteLine("Valid path : " + Path);
                 files = Directory.GetFiles(Path, @"*.dcm", SearchOption.TopDirectoryOnly);
-                Console.WriteLine(files.Length + "images found");
-                int i = 0;
+                //Console.WriteLine(files.Length + "images found");
+                
                 string subPath = System.IO.Path.Combine(Path, "out");
                 System.IO.Directory.CreateDirectory(subPath);
 
+                int i = 1;
                 foreach (String fileName in files)
                 {
-                    Console.WriteLine("compute : " + i + " name : "  + fileName);
+                    //Console.WriteLine("compute : " + i + " name : "  + fileName);
                     mc.readDicom(fileName, "peutimporte");
-                    string filenamepng = i +  ".png";
+
+                    string prefix = "";
+                    int power = 1000000;
+                    while (i < power)
+                    {
+                        prefix += "0";
+                        power /= 10;
+                    }
+                    
+                    string filenamepng = prefix + i +  ".png";
                     mc.save(System.IO.Path.Combine(subPath, filenamepng));
                     i++;
                 }
