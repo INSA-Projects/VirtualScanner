@@ -25,7 +25,7 @@ public class LoadImages : MonoBehaviour
         }
 
         // get the middlevr camera and assign the raymarching on it
-        GameObject camera = GameObject.Find("Camera0");
+        GameObject camera = GameObject.Find("CenterEyeAnchor");
         if (camera == null)
         {
             Debug.LogError("Camera from MiddleVR was not found");

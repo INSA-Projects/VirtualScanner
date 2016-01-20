@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Collections;
 using System.IO;
 
+
 public class DicomPngConvertor : MonoBehaviour 
 {
     private string dicomPath; // path of dicom
@@ -33,7 +34,9 @@ public class DicomPngConvertor : MonoBehaviour
             PlayerPrefs.SetString("SlicesPath", this.dicomPath + @"/out/");            
         }
 
-        Application.LoadLevel(3);
+
+
+        Application.LoadLevel(2);
     }
 
     /// <summary>
