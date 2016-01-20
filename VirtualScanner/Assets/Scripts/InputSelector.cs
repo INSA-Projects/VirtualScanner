@@ -9,33 +9,22 @@ public static class InputMethod
 }
 
 public class InputSelector : MonoBehaviour 
-{
-    private int inputMethod = InputMethod.KEYBOARD;
-    public Text goWithButtonText;
-    public Button goWithButton;
-    
-    void Start()
-    {
-        this.goWithButton.gameObject.SetActive(false);
-    }
+{   
 
     public void SetRazerInput()
     {
-        this.goWithButton.gameObject.SetActive(true);
-        this.inputMethod = InputMethod.RAZER;
-        this.goWithButtonText.text = "Go with Razer!";
+        PlayerPrefs.SetInt("InputMethod", InputMethod.RAZER);
+        this.letsGo();
     }
 
     public void SetKeyboardInput()
     {
-        this.goWithButton.gameObject.SetActive(true);
-        this.inputMethod = InputMethod.KEYBOARD;
-        this.goWithButtonText.text = "Go with Keyboard!";
+        PlayerPrefs.SetInt("InputMethod", InputMethod.KEYBOARD);
+        this.letsGo();
     }
 
-    public void LetsGo()
+    private void letsGo()
     {
-        PlayerPrefs.SetInt("InputMethod", this.inputMethod);
-        Application.LoadLevel(3);
+        Application.LoadLevel(2);
     }
 }

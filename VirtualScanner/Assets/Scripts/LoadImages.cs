@@ -8,8 +8,11 @@ public class LoadImages : MonoBehaviour
 {
     private string slicesPath; // path of png slices
 
+    public Transform clippingPlane;
+    public Transform cubeTarget;
     public RayMarching RayMarchingPrefab;
     private RayMarching middleVRRay;
+
 
     // init function
     void Start()
@@ -23,8 +26,15 @@ public class LoadImages : MonoBehaviour
 
         // get the middlevr camera and assign the raymarching on it
         GameObject camera = GameObject.Find("Camera0");
+        if (camera == null)
+        {
+            Debug.LogError("Camera from MiddleVR was not found");
+            return;
+        }
         this.middleVRRay = camera.AddComponent<RayMarching>();
         this.duplicate(this.RayMarchingPrefab, this.middleVRRay);
+        this.middleVRRay.ClippingPlane = this.clippingPlane;
+        this.middleVRRay.CubeTarget = this.cubeTarget;
         
         // load the slices
         loadSlices();
@@ -60,6 +70,7 @@ public class LoadImages : MonoBehaviour
                     Texture2D texture = new Texture2D (2, 2);
                     texture.LoadImage (fileData);
                     middleVRRay.Slices[i++] = texture;
+
                 }
             }
             middleVRRay.GenerateVolumeTexture();

@@ -4,7 +4,6 @@ using UnityEngine.UI;
 public class FolderSelector : MonoBehaviour 
 {
     public Text folderPath; // dicom folder
-    public Text holdOn;
     public Button launchButton;
     public Button browseButton;
     private FileBrowser fileBrowser;
@@ -17,7 +16,6 @@ public class FolderSelector : MonoBehaviour
         this.launchButton.gameObject.SetActive(false);
         this.browseButton.gameObject.SetActive(true);
         this.fileBrowser = new FileBrowser(Application.dataPath);
-        this.holdOn.gameObject.SetActive(false);
 	}
 	
 
@@ -58,7 +56,6 @@ public class FolderSelector : MonoBehaviour
     /// </summary>
     public void LaunchScene()
     {
-        this.holdOn.gameObject.SetActive(true);
         PlayerPrefs.SetString("DICOMFolder", this.folderPath.text);
         Application.LoadLevel(1);
     }

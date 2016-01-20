@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Diagnostics;
 using System.Collections;
+using System.IO;
 
 public class DicomPngConvertor : MonoBehaviour 
 {
@@ -21,9 +22,30 @@ public class DicomPngConvertor : MonoBehaviour
     // routine converting dicom to png
     private IEnumerator conversionRoutine()
     {
-        yield return StartCoroutine(this.launchCommandLineApp());
-        PlayerPrefs.SetString("SlicesPath", this.dicomPath + @"/out/");
-        Application.LoadLevel(2);
+        yield return new WaitForEndOfFrame();
+        if (this.folderIsPngFolder())
+        {
+            PlayerPrefs.SetString("SlicesPath", this.dicomPath);
+        }
+        else
+        {
+            yield return StartCoroutine(this.launchCommandLineApp());
+            PlayerPrefs.SetString("SlicesPath", this.dicomPath + @"/out/");            
+        }
+
+        Application.LoadLevel(3);
+    }
+
+    /// <summary>
+    /// Check wether or not the folder is a png folder
+    /// </summary>
+    /// <returns></returns>
+    private bool folderIsPngFolder()
+    {
+        DirectoryInfo dir = new DirectoryInfo(this.dicomPath);
+        FileInfo[] info = dir.GetFiles("*.png*");
+
+        return info.Length > 2;        
     }
 
     /// <summary>

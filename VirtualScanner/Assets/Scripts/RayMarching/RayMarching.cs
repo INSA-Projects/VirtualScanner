@@ -5,6 +5,36 @@ using System.Collections.Generic;
 [RequireComponent(typeof(Camera))]
 public class RayMarching : MonoBehaviour
 {
+    public Texture2D[] Slices
+    {
+        get { return this.slices; }
+        set { this.slices = value; }
+    }
+
+    public Transform ClippingPlane
+    {
+        private get
+        {
+            return this.clipPlane;
+        }
+        set 
+        {
+            this.clipPlane = value;
+        }
+    }
+
+    public Transform CubeTarget
+    {
+        private get
+        {
+            return this.cubeTarget;
+        }
+        set
+        {
+            this.cubeTarget = value;
+        }
+    }
+
 	[SerializeField]
 	[Header("Render in a lower resolution to increase performance.")]
 	private int downscale = 2;
@@ -46,11 +76,7 @@ public class RayMarching : MonoBehaviour
 	public Texture3D _volumeBuffer;
 
 
-    public Texture2D[] Slices
-    {
-        get { return this.slices; }
-        set { this.slices = value; }
-    }
+    
     
 	/*private void Awake()
 	{
