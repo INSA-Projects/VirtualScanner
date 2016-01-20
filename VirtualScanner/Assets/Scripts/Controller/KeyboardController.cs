@@ -1,49 +1,38 @@
 ﻿using UnityEngine;
 using System.Collections;
+using MiddleVR_Unity3D;
 
 public class KeyboardController : MonoBehaviour
 {
-    // keyboard
-    public float keyboardSensitivity = 1;
+	//Object to rotate
+	public GameObject obj;
 
-    // mouse
-    public float sensitivityX = 1F;
-    public float sensitivityY = 1F;
+	// Angles
+	public float _x;
+	public float _y;
 
-    public float minimumX = -80F;
-    public float maximumX = 80F;
-    public float minimumY = -60F;
-    public float maximumY = 60F;
-
-	vrCamera camView;
-	vrCamera camUser;
-
-    float rotationY = 0F;
+	// MiddleVR Mouse
+	vrMouse mouse;
 
 	void Start(){
-
-		camView = MiddleVR.VRDisplayMgr.GetCamera ("ViewCamera");
-		camUser = MiddleVR.VRDisplayMgr.GetCamera ("Camera0");
+		obj = GameObject.Find ("Cube");
+		mouse = MiddleVR.VRDeviceMgr.GetMouse ();
 	}
 
 
     void Update()
     {
-        // keyboard
-        
-        this.transform.position += this.transform.forward * Input.GetAxis("Vertical") * keyboardSensitivity;
-        this.transform.position += this.transform.right * Input.GetAxis("Horizontal") * keyboardSensitivity;
-        
+		if (MiddleVR.VRDeviceMgr != null) {
 
-        // mouse
-        if (Input.GetMouseButton(0))
-        {
-            float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
-            rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
-            rotationY = Mathf.Clamp(rotationY, minimumY, maximumY);
-            transform.localEulerAngles = new Vector3(rotationY, rotationX, 0);
-        }
+			if (mouse.IsButtonPressed(1)) 
+			{
+				_x = mouse.GetAxisValue (0); //* _xSpeed;
+				_y = mouse.GetAxisValue (1);// * _ySpeed;
+			
+				obj.transform.Rotate(Vector3.up * - _x, Space.World);
+				obj.transform.Rotate(Vector3.left * _y, Space.World);
+			}
+
+		}
     }
-
-
 }
